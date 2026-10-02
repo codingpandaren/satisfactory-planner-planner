@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satisfactory Planner Planner™ | AI-Powered Planner Planning Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .gradient-text { background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #ec4899 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .glass { background: rgba(255,255,255,0.04); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); }
+  .glow { box-shadow: 0 0 40px rgba(168,85,247,0.35); }
+  .btn-gradient { background: linear-gradient(135deg, #a855f7, #6366f1); transition: all .3s ease; }
+  .btn-gradient:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(168,85,247,.5); }
+  .blob { position: fixed; border-radius: 9999px; filter: blur(120px); opacity: .3; pointer-events: none; z-index: 0; }
+  .widget { transition: all .3s ease; }
+  .widget:hover { border-color: rgba(168,85,247,.4); }
+  .flash { animation: flash 1s ease; }
+  @keyframes flash { 0% { background: rgba(168,85,247,.35) } 100% { background: transparent } }
+  .feed-item { animation: slide .4s ease; }
+  @keyframes slide { from { opacity: 0; transform: translateX(-10px) } to { opacity: 1 } }
+  .toast { transform: translateX(120%); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+  .toast.show { transform: translateX(0); }
+  ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #6d28d9; border-radius: 9px; }
+  /* TODO: refactor this whole file into components */
+</style>
+</head>
+<body class="bg-[#07070c] text-white overflow-x-hidden">
+
+<div class="blob w-[500px] h-[500px] bg-purple-700 -top-40 -left-40"></div>
+<div class="blob w-[500px] h-[500px] bg-indigo-700 top-1/2 -right-40"></div>
+<div class="blob w-[400px] h-[400px] bg-pink-700 bottom-0 left-1/3"></div>
+
+<!-- AI leftover -->
+<p class="relative z-10 text-[11px] text-gray-500 px-4 pt-2 mono">Certainly! Here's a comprehensive real-time analytics dashboard for Satisfactory Planner Planner™ with live charts, KPIs, and an AI assistant:</p>
+
+<!-- Announcement bar -->
+<div class="relative z-10 bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-center text-xs font-semibold py-1.5 px-4">
+  🎉 Introducing <b>Satisfactory Planner Planner Planner™</b>, the planner for choosing your Planner Planner™. Now in private beta! <a href="#" onclick="soon();return false" class="underline">Join waitlist →</a>
+</div>
+
+<div class="relative z-10 flex">
+
+  <!-- Sidebar -->
+  <aside class="hidden lg:flex flex-col w-60 shrink-0 min-h-screen glass border-y-0 border-l-0 p-4 gap-1 text-sm sticky top-0 h-screen overflow-y-auto">
+    <div class="font-black text-lg mb-1 leading-tight"><span class="gradient-text">Planner Planner™</span></div>
+    <div class="text-[10px] text-gray-500 mb-5 mono">v0.0.1-beta-final-FINAL-v2</div>
+    <div class="text-[10px] uppercase tracking-widest text-gray-500 mb-1 mt-2">Main</div>
+    <a href="#" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-purple-500/20 text-purple-200">📊 Dashboard</a>
+    <a href="#pp" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🧭 Planner Planner™</a>
+    <a href="#leader" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🏆 Planner Leaderboard</a>
+    <a href="#gpt" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🤖 PlannerGPT <span class="ml-auto text-[10px] bg-pink-500 rounded px-1.5">NEW</span></a>
+    <div class="text-[10px] uppercase tracking-widest text-gray-500 mb-1 mt-4">Analytics</div>
+    <a href="#" onclick="soon();return false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">📈 Planner Analytics</a>
+    <a href="#" onclick="soon();return false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🔮 Planner Forecast</a>
+    <a href="#" onclick="soon();return false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🧪 Planner Lab</a>
+    <a href="#" onclick="soon();return false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🪐 Planner Planner Planner™ <span class="ml-auto text-[10px] bg-indigo-500 rounded px-1.5">BETA</span></a>
+    <div class="text-[10px] uppercase tracking-widest text-gray-500 mb-1 mt-4">Settings</div>
+    <a href="#" onclick="soon();return false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">⚙️ Settings</a>
+    <a href="#" onclick="soon();return false" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/5 text-gray-300">🌙 Toggle Dark Mode</a>
+    <div class="mt-auto glass rounded-xl p-4 text-xs">
+      <div class="font-bold mb-1">⚡ Upgrade to Pro</div>
+      <div class="text-gray-400 mb-3">Unlock ✨ more AI ✨ and even darker mode.</div>
+      <button onclick="soon()" class="btn-gradient w-full rounded-lg py-2 font-semibold">Upgrade $9.99/mo</button>
+    </div>
+  </aside>
+
+  <main class="flex-1 min-w-0 p-4 md:p-6 space-y-6">
+
+    <!-- Top bar -->
+    <div class="flex flex-wrap items-center gap-3">
+      <input placeholder="🔍 Search planners, planner planners, ⌘K" class="flex-1 min-w-[200px] bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" id="topsearch">
+      <div class="flex items-center gap-2 glass rounded-xl px-3 py-2 text-xs"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> All systems vibing</div>
+      <button onclick="soon()" class="relative glass rounded-xl px-3 py-2">🔔<span id="notif" class="absolute -top-1 -right-1 bg-pink-500 text-[10px] font-bold rounded-full min-w-[18px] h-[18px] grid place-items-center px-1">3</span></button>
+      <div class="flex items-center gap-2 glass rounded-xl px-3 py-1.5"><div class="w-7 h-7 rounded-full bg-gradient-to-br from-purple-400 to-pink-400"></div><span class="text-sm hidden sm:inline">Pioneer</span></div>
+    </div>
+
+    <!-- Hero headline -->
+    <div class="glass rounded-3xl p-6 md:p-10 relative overflow-hidden">
+            <div class="inline-flex items-center gap-2 bg-purple-500/15 text-purple-300 rounded-full px-3 py-1 text-xs mb-4"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> 🚀 LIVE · Tracking planners in real time</div>
+      <h1 class="text-4xl md:text-6xl xl:text-7xl font-black tracking-tight leading-[1.02]">Satisfactory<br><span class="gradient-text">Planner Planner™</span></h1>
+      <p class="text-gray-400 mt-4 max-w-2xl text-base md:text-lg">The world's first AI-powered planner for planning which Satisfactory planner to plan with. Because someone posts a new planner every day, and somebody has to keep track. ✨🏭</p>
+      <div class="flex flex-wrap gap-3 mt-6">
+        <a href="#pp" class="btn-gradient px-6 py-3 rounded-xl font-semibold glow">✨ Plan My Planner</a>
+        <a href="#gpt" class="glass px-6 py-3 rounded-xl font-semibold hover:bg-white/10">🤖 Ask PlannerGPT</a>
+      </div>
+      <p class="text-[11px] text-gray-500 mt-4">Satisfactory Planner Planner™ is not a planner. It is a planner planner. Please do not use it to plan factories.</p>
+    </div>
+
+    <!-- KPI row -->
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4" id="kpis"></div>
+
+    <!-- Row: chart + countdown -->
+    <div class="grid xl:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-5 widget xl:col-span-2">
+        <div class="flex items-center justify-between mb-3">
+          <div><div class="font-bold">📈 Planners Released (Live)</div><div class="text-xs text-gray-500">Real-time stream · updates every 2s · source: vibes</div></div>
+          <div class="flex gap-1 text-[11px]"><span class="bg-purple-500/30 rounded px-2 py-1">1H</span><span class="glass rounded px-2 py-1 text-gray-400">24H</span><span class="glass rounded px-2 py-1 text-gray-400">7D</span><span class="glass rounded px-2 py-1 text-gray-400">ALL</span></div>
+        </div>
+        <div class="h-64"><canvas id="lineChart"></canvas></div>
+      </div>
+      <div class="glass rounded-2xl p-5 widget flex flex-col">
+        <div class="font-bold">🔮 Next Planner Forecast</div>
+        <div class="text-xs text-gray-500 mb-4">AI-predicted time until the next planner is posted</div>
+        <div class="mono text-5xl font-bold gradient-text text-center my-auto" id="countdown">00:00</div>
+        <div class="mt-4">
+          <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Confidence</span><span id="conf">97.3%</span></div>
+          <div class="h-2 bg-white/10 rounded-full overflow-hidden"><div id="confbar" class="h-full btn-gradient" style="width:97%"></div></div>
+        </div>
+        <div class="text-[11px] text-gray-500 mt-3">Model: PlannerGPT-4o-turbo-mini-pro</div>
+      </div>
+    </div>
+
+    <!-- Row: Planner Planner tool + feed + donut -->
+    <div class="grid xl:grid-cols-3 gap-4">
+      <div id="pp" class="glass rounded-2xl p-5 widget glow">
+        <div class="font-bold text-lg">🧭 The Planner Planner™</div>
+        <div class="text-xs text-gray-500 mb-4">Patent pending. Trademark pending. Everything pending.</div>
+        <label class="text-xs text-gray-400">🏭 Your tier</label>
+        <select id="tier" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 mb-3 text-sm">
+          <option value="0" class="bg-gray-900">Tier 0 (already making spreadsheets)</option>
+          <option value="1" class="bg-gray-900">Tier 4 (spaghetti phase)</option>
+          <option value="2" class="bg-gray-900">Tier 9 (no grass in 300h)</option>
+          <option value="3" class="bg-gray-900">I don't play, I build planners</option>
+        </select>
+        <label class="text-xs text-gray-400">🤖 AI level</label>
+        <div class="grid grid-cols-3 gap-2 mb-3">
+          <button data-v="0" class="ai-opt glass rounded-lg py-2 text-xs">None 🙅</button>
+          <button data-v="1" class="ai-opt glass rounded-lg py-2 text-xs ring-2 ring-purple-500">Some ✨</button>
+          <button data-v="2" class="ai-opt glass rounded-lg py-2 text-xs">ALL 🚀</button>
+        </div>
+        <label class="text-xs text-gray-400">💭 Describe your dream planner</label>
+        <textarea id="prompt" rows="2" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm mb-3" placeholder="like satisfactorytools but different"></textarea>
+        <button id="go" class="btn-gradient w-full py-3 rounded-xl font-bold">✨ Generate Planner Plan</button>
+        <div id="result" class="mt-4 hidden"></div>
+      </div>
+
+      <div class="glass rounded-2xl p-5 widget flex flex-col">
+        <div class="flex items-center justify-between mb-3"><div class="font-bold">📡 Live Planner Feed</div><span class="text-[10px] bg-red-500/80 rounded px-2 py-0.5 font-bold animate-pulse">● LIVE</span></div>
+        <div id="feed" class="space-y-2 overflow-hidden h-[420px]"></div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="glass rounded-2xl p-5 widget">
+          <div class="font-bold">🧱 Planner Tech Stack</div>
+          <div class="text-xs text-gray-500 mb-2">Distribution across all indexed planners (estimated)</div>
+          <div class="h-48"><canvas id="donut"></canvas></div>
+        </div>
+        <div class="glass rounded-2xl p-5 widget">
+          <div class="font-bold mb-3">🩺 Planner Ecosystem Health</div>
+          <div class="space-y-3 text-xs" id="health"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row: bar chart + heatmap + gauge -->
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-5 widget">
+        <div class="font-bold">🗳️ Top Feature Requests</div>
+        <div class="text-xs text-gray-500 mb-2">From every planner's comment section ever</div>
+        <div class="h-56"><canvas id="bars"></canvas></div>
+      </div>
+      <div class="glass rounded-2xl p-5 widget">
+        <div class="font-bold">🟪 Planner Release Activity</div>
+        <div class="text-xs text-gray-500 mb-3">Last 26 weeks. Every square is someone's weekend.</div>
+        <div id="heat" class="grid gap-[3px]" style="grid-template-columns:repeat(26,1fr)"></div>
+        <div class="flex items-center gap-1 justify-end text-[10px] text-gray-500 mt-2">Less <span class="w-2.5 h-2.5 rounded-sm bg-white/5"></span><span class="w-2.5 h-2.5 rounded-sm bg-purple-900"></span><span class="w-2.5 h-2.5 rounded-sm bg-purple-700"></span><span class="w-2.5 h-2.5 rounded-sm bg-purple-500"></span><span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span> More</div>
+      </div>
+      <div class="glass rounded-2xl p-5 widget md:col-span-2 xl:col-span-1">
+        <div class="font-bold">🎯 Planner Planner™ Index</div>
+        <div class="text-xs text-gray-500 mb-2">Planners per actual factory being built</div>
+        <div class="h-40 relative"><canvas id="gauge"></canvas><div class="absolute inset-x-0 bottom-2 text-center"><div class="text-4xl font-black gradient-text" id="ppi">3.7</div><div class="text-[10px] text-gray-500">CRITICAL 🚨 (healthy is &lt; 1)</div></div></div>
+        <div class="grid grid-cols-3 gap-2 mt-4 text-center text-xs">
+          <div class="bg-white/5 rounded-lg p-2"><div class="font-bold text-lg">97%</div><div class="text-gray-500">purple</div></div>
+          <div class="bg-white/5 rounded-lg p-2"><div class="font-bold text-lg">0</div><div class="text-gray-500">tests</div></div>
+          <div class="bg-white/5 rounded-lg p-2"><div class="font-bold text-lg">∞</div><div class="text-gray-500">✨</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row: leaderboard + gpt -->
+    <div class="grid xl:grid-cols-3 gap-4">
+      <div id="leader" class="glass rounded-2xl p-5 widget xl:col-span-2">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div><div class="font-bold">🏆 Planner Leaderboard</div><div class="text-xs text-gray-500">Real planners from the <a href="https://satisfactory.wiki.gg/wiki/Tools" target="_blank" class="text-purple-400 underline">wiki</a> + Reddit. Scores and statuses are 100% made up. We love you, planner devs 💜</div></div>
+          <input id="search" placeholder="🔍 Filter..." class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm w-40">
+        </div>
+        <div class="overflow-x-auto max-h-[460px] overflow-y-auto">
+          <table class="w-full text-sm">
+            <thead class="text-[11px] uppercase text-gray-500 sticky top-0 bg-[#0d0d16]"><tr><th class="text-left py-2 px-2">#</th><th class="text-left py-2">Planner</th><th class="text-left py-2 hidden md:table-cell">Status</th><th class="text-right py-2">PP Score</th><th class="text-right py-2 px-2">24h</th></tr></thead>
+            <tbody id="board"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="gpt" class="glass rounded-2xl p-5 widget flex flex-col h-[560px]">
+        <div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 rounded-full btn-gradient grid place-items-center">🤖</div><div><div class="font-bold text-sm">PlannerGPT</div><div class="text-[10px] text-green-400">● Online · hallucinating responsibly</div></div></div>
+        <div id="chat" class="flex-1 overflow-y-auto space-y-3 text-sm pr-1"></div>
+        <div class="flex flex-wrap gap-1 my-2">
+          <button class="sugg text-[11px] glass rounded-full px-2 py-1">Which planner is best?</button>
+          <button class="sugg text-[11px] glass rounded-full px-2 py-1">How do I make plastic?</button>
+          <button class="sugg text-[11px] glass rounded-full px-2 py-1">Should I build a planner?</button>
+        </div>
+        <form id="chatform" class="flex gap-2"><input id="chatin" placeholder="Ask anything about planners..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm"><button class="btn-gradient rounded-lg px-3">➤</button></form>
+      </div>
+    </div>
+
+    <!-- Row: terminal + testimonials -->
+    <div class="grid xl:grid-cols-3 gap-4">
+      <div class="glass rounded-2xl p-5 widget xl:col-span-2">
+        <div class="flex items-center gap-2 mb-3"><span class="w-3 h-3 rounded-full bg-red-500"></span><span class="w-3 h-3 rounded-full bg-yellow-500"></span><span class="w-3 h-3 rounded-full bg-green-500"></span><span class="text-xs text-gray-500 ml-2 mono">planner-planner — system.log</span></div>
+        <div id="term" class="mono text-[11px] text-green-400 h-48 overflow-hidden leading-relaxed"></div>
+      </div>
+      <div class="glass rounded-2xl p-5 widget">
+        <div class="font-bold mb-3">💬 What Pioneers Say</div>
+        <div id="quote" class="text-gray-300 text-sm italic min-h-[70px] transition-opacity duration-500"></div>
+        <div id="quoteby" class="text-xs text-gray-500 mt-2"></div>
+        <div class="text-yellow-400 text-sm mt-2">★★★★★</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="pt-6 pb-10 text-center text-xs text-gray-500 space-y-2">
+      <p>© 2024 Satisfactory Planner Planner™. All rights reserved. Built with ❤️ and AI.</p>
+      <p>Satisfactory Planner Planner™ is a trademark of Satisfactory Planner Planner Planner™, a subsidiary of Satisfactory Planner Planner Planner Planner™.</p>
+      <p>Not affiliated with Coffee Stain Studios or FICSIT Inc. Made with love for every dev who has shipped a planner at 3am. Yes, we know this is also a planner.</p>
+      <p class="mono text-left max-w-3xl mx-auto pt-6 text-gray-600">This dashboard includes:<br>- Real-time KPI cards with live updates<br>- Interactive Chart.js visualizations<br>- AI chat assistant<br>- Fully responsive glassmorphism design<br><br>Let me know if you'd like me to add more widgets! 😊</p>
+    </footer>
+  </main>
+</div>
+
+<div id="toast" class="toast fixed top-20 right-4 z-50 glass rounded-xl px-5 py-4 text-sm font-medium shadow-2xl max-w-xs bg-[#13131f]/90">✨</div>
+
+<script>
+const PLANNERS = [
+  {n:"Satisfactory Tools",u:"https://www.satisfactorytools.com/1.0",d:"Production planning plus a codex browser. The one everyone in the comments asks about.",t:["og"]},
+  {n:"Satisfactory Calculator (SCIM)",u:"https://satisfactory-calculator.com/en/production-planner",d:"Production planner, interactive map, save editor. Basically a whole second game.",t:["og"]},
+  {n:"Calculatory",u:"https://calculatory.ovh/",d:"Shows the components and buildings needed for an item.",t:[]},
+  {n:"FactorioLab",u:"https://factoriolab.github.io/satisfactory",d:"Very thorough planner. Made for a different game, which is how serious it is.",t:["og"]},
+  {n:"satisfactory.dev v1.1",u:"https://v1p1.satisfactory.dev/",d:"Production planner for 1.1 built on an npm package. Even the subdomain has a version number.",t:[]},
+  {n:"Satisfactory Logistics",u:"https://satisfactory-logistics.xyz",d:"Production calculator plus a logistics tracker between factories.",t:[]},
+  {n:"Satisfactory Factories",u:"https://satisfactory-factories.app",d:"Production logistics chain manager and macro production calculator.",t:[]},
+  {n:"SatisfactoryPlanner.net",u:"https://satisfactoryplanner.net",d:"The 'ultimate' factory planning tool, from Tier 0 to nuclear.",t:[]},
+  {n:"SatisfiedVisual2",u:"https://madeinnewyork87.github.io/SatisfiedVisual2/SatisfiedPlanner2.html",d:"Node-based drag-and-drop planner with an AI Architect. The 2 tells you something happened.",t:["node","ai"]},
+  {n:"Ferrumium",u:"https://ferrumium.com",d:"A platform for planning and sharing factories.",t:[]},
+  {n:"Manifolder",u:"https://manifolder.app/",d:"Production calculator with a layout mode.",t:["layout"]},
+  {n:"Yet Another Factory Planner",u:"https://yafp.game.gottselig.ca/",d:"Browser solver with offline support. At least the name is honest.",t:["og"]},
+  {n:"Satisfactory Balancer Calculator",u:"https://satisfactory-balancer-calculator.app",d:"Designs balancers and manifolds. A planner for one small part of your plan.",t:["layout"]},
+  {n:"SatisfactoryBase",u:"https://satisfactorybase.com/",d:"All-in-one planning: production, maps and blueprints. It's on the wiki list twice.",t:[]},
+  {n:"Satisfactory Sim",u:"https://satisfactorysim.com/",d:"Modern UI, save import and AI assistance.",t:["ai"]},
+  {n:"Satisfactory Sheet",u:"https://satisfactory-sheet.com/",d:"Tracks production rates and finds problems in your chains.",t:[]},
+  {n:"Refactory",u:"https://refactory.ignorare.app",d:"Spreadsheet-style calculator. For people who really love spreadsheets.",t:[]},
+  {n:"SankeyFactory",u:"https://sankeyfactory.github.io/",d:"Production planning shown as Sankey diagrams.",t:["node"]},
+  {n:"FICSIT Companion",u:"https://adepierre.github.io/ficsit-companion/",d:"Node-based production planner.",t:["node"]},
+  {n:"Satisfactory Accounting",u:"https://satisfactory-accounting.github.io/",d:"Resource balance analysis. Somebody has to do the books.",t:[]},
+  {n:"Satisfactory Architect",u:"https://satisfactory-architect.com",d:"Visualizes production chains and finds bottlenecks.",t:["node"]},
+  {n:"Satisfactory Layouts",u:"https://www.satisfactory-layouts.com",d:"2D factory layout planning with blueprints.",t:["layout"]},
+  {n:"Planit",u:"https://planit-mocha.vercel.app",d:"Grid-based layout planner. Yes, the URL really is -mocha.vercel.app.",t:["layout"]},
+  {n:"Satisfactory Bridge Planner",u:"https://ruliana.github.io/satisfactory-bridge-planner/",d:"Plans suspension bridges and arches. The specialists have arrived.",t:["layout"]},
+  {n:"FICSIT Production Planner",u:"http://ficsitproductionplanner.atrumcore.com/",d:"2D planner with multi-floor support.",t:["layout"]},
+  {n:"Splitter Calculator",u:"https://icemoonmagic.github.io/Satisfactory-Splitter-Calculator/",d:"Works out exact split values in items per minute.",t:[]},
+  {n:"Satisgraphtory2",u:"https://satisgraphtory2.com/graph",d:"Visual production planner, still in alpha. Another sequel.",t:["node"]},
+  {n:"Statisfactory",u:"https://statisfactory.net",d:"Stats and analytics dashboard for your factory. One letter away from the game.",t:[]},
+  {n:"Satisfactory-Hub",u:"https://satisfactory-hub.vercel.app",d:"PWA with an offline map and production calculator.",t:[]},
+  // spotted on reddit
+  {n:"FICSIT Planner (pages.dev)",u:"https://ficsit-planner.pages.dev/?v=reddit",d:"The URL has ?v=reddit. They know exactly where you came from.",t:["reddit"]},
+  {n:"FICSIT Planner (.com)",u:"https://ficsitplanner.com",d:"Different from the FICSIT Planner above. Probably. We think.",t:["reddit"]},
+  {n:"satisfactory-planner",u:"https://mareklackowski.github.io/satisfactory-planner/",d:"A GitHub Pages planner. Its name is also its description. Efficient.",t:["reddit"]},
+  {n:"Chain Planner (test A)",u:"https://chain-planner-test-a.web.app/",d:"It's still test A. Test B is what the community is waiting for.",t:["reddit"]},
+  {n:"MasterPlanner",u:"https://masterplanner.app/",d:"A master planner. Whatever we pick in the Planner Planner, this one plans it.",t:["reddit"]},
+  {n:"Pioneer Toolbox",u:"https://pioneertoolbox.com",d:"A whole toolbox. Statistically, it has at least one planner in it.",t:["reddit"]},
+  {n:"Satisfactory Layout Planner",u:"https://satisfactory-layout-planner.vercel.app",d:"Layout planning on Vercel. The default URL is the brand.",t:["reddit","layout"]},
+  {n:"Satisfactory Floor Planner",u:"https://chrisullery.github.io/SatisfactoryFloorPlanner/",d:"For planning floors. Every planner gets more specific than the last.",t:["reddit","layout"]},
+];
+
+// ===== Helpers =====
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function hash(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+const $ = (id) => document.getElementById(id);
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 3200); }
+function soon() { toast("🚧 Coming soon! (TODO: implement this)"); }
+
+console.log("DEBUG: dashboard mounted"); // TODO: remove before prod
+console.log("🚀 Satisfactory Planner Planner™ v0.0.1-beta-final-FINAL-v2");
+console.warn("Warning: Each child in a list should have a unique \"key\" prop. (we don't even use React)");
+
+// ===== Planner name generator =====
+const ADJ = ["Ultimate", "Smart", "Visual", "Next-Gen", "Modern", "Lightweight", "Blazing-fast", "Open-source", "AI-Powered", "Minimal", "Cozy", "Better", "Final", "Proper"];
+const NOUN = ["Planner", "Calculator", "Factory Planner", "Production Planner", "Optimizer", "Graph Tool", "Companion", "Ratio Helper", "Layout Designer"];
+const OPENERS = ["I made", "I built", "I vibe coded", "Over the weekend I made", "Introducing", "Yet another", "Hear me out:", "Tired of other planners so I made"];
+const SUFFIX = ["(feedback welcome!)", "– free, no ads", "with node graphs", "now with AI ✨", "works on mobile", "open source!", "v2 is out", "for 1.1", "in 4 hours lol"];
+const PRE = ["Satis", "Ficsit", "Factor", "Conveyor", "Belt", "Sloop", "Doggo", "Hub", "Lizard", "Ratio", "Spaghetti", "Manifold", "Ada"];
+const POST = ["ify", "ly", "io", "flow", "Forge", "Craft", "Graph", "Mind", "Hub", "Lab", "Pilot", "Brain", "OS"];
+const genName = () => pick(PRE) + pick(POST);
+const genHost = (n) => pick([`${n.toLowerCase()}-${pick(["mocha", "pi", "psi", "omega", "kappa"])}.vercel.app`, `${n.toLowerCase()}.netlify.app`, `${n.toLowerCase()}.xyz`, `${n.toLowerCase()}-final-v2.pages.dev`, `${n.toLowerCase()}-test-b.web.app`]);
+
+// ===== KPIs =====
+const KPIS = [
+  { k: "indexed", label: "Planners Indexed", v: PLANNERS.length, fmt: (v) => v, d: "+8 this week", icon: "🗂️" },
+  { k: "today", label: "Released Today", v: rand(3, 6), fmt: (v) => v, d: "▲ 312% vs yesterday", icon: "🚀" },
+  { k: "diff", label: '"How is this different from satisfactorytools?"', v: rand(40, 60), fmt: (v) => v, d: "comments today", icon: "🤔" },
+  { k: "purple", label: "Purple Gradient Usage", v: 97.3, fmt: (v) => v.toFixed(1) + "%", d: "▲ industry standard", icon: "🟣" },
+  { k: "deploys", label: "Vercel Deploys/min", v: 14.2, fmt: (v) => v.toFixed(1), d: "▲ all named *-mocha", icon: "▲" },
+  { k: "life", label: "Avg Time to v2", v: 4.2, fmt: (v) => v.toFixed(1) + " days", d: "▼ getting faster", icon: "⏱️" },
+];
+$("kpis").innerHTML = KPIS.map((x) => `
+  <div class="glass rounded-2xl p-4 widget">
+    <div class="flex items-start justify-between gap-2"><div class="text-[11px] text-gray-400 leading-tight">${esc(x.label)}</div><div class="text-lg">${x.icon}</div></div>
+    <div class="text-3xl font-black mt-2 gradient-text" id="kpi-${x.k}">${x.fmt(x.v)}</div>
+    <div class="text-[11px] text-green-400 mt-1">${x.d}</div>
+    <svg viewBox="0 0 100 24" class="w-full h-6 mt-2"><polyline fill="none" stroke="#a855f7" stroke-width="2" points="${Array.from({ length: 12 }, (_, i) => `${i * 9},${rand(2, 22)}`).join(" ")}"/></svg>
+  </div>`).join("");
+function bumpKpi(k, delta) {
+  const x = KPIS.find((y) => y.k === k); x.v += delta;
+  const el = $("kpi-" + k); el.textContent = x.fmt(x.v);
+  el.parentElement.classList.remove("flash"); void el.parentElement.offsetWidth; el.parentElement.classList.add("flash");
+}
+setInterval(() => bumpKpi("diff", 1), 3500);
+setInterval(() => bumpKpi("purple", (Math.random() - 0.3) * 0.1), 2500);
+setInterval(() => bumpKpi("deploys", (Math.random() - 0.4) * 1.5), 1800);
+
+// ===== Charts =====
+Chart.defaults.color = "#9ca3af";
+Chart.defaults.font.family = "Inter";
+Chart.defaults.borderColor = "rgba(255,255,255,0.06)";
+const ctx = $("lineChart").getContext("2d");
+const grad = ctx.createLinearGradient(0, 0, 0, 250);
+grad.addColorStop(0, "rgba(168,85,247,0.5)"); grad.addColorStop(1, "rgba(168,85,247,0)");
+const now = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+const lineChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: Array.from({ length: 20 }, () => ""),
+    datasets: [
+      { label: "Planners released", data: Array.from({ length: 20 }, (_, i) => 3 + i * 0.4 + Math.random() * 3), borderColor: "#a855f7", backgroundColor: grad, fill: true, tension: 0.4, pointRadius: 0, borderWidth: 3 },
+      { label: "Factories actually built", data: Array.from({ length: 20 }, () => Math.random() * 1.2), borderColor: "#ec4899", borderDash: [6, 4], tension: 0.4, pointRadius: 0, borderWidth: 2 },
+    ],
+  },
+  options: { responsive: true, maintainAspectRatio: false, animation: { duration: 600 }, plugins: { legend: { labels: { boxWidth: 10 } } }, scales: { y: { beginAtZero: true } } },
+});
+setInterval(() => {
+  const d = lineChart.data;
+  d.labels.push(now()); d.labels.shift();
+  const last = d.datasets[0].data.at(-1);
+  d.datasets[0].data.push(Math.max(2, last + (Math.random() - 0.35) * 2)); d.datasets[0].data.shift();
+  d.datasets[1].data.push(Math.random() * 1.2); d.datasets[1].data.shift();
+  lineChart.update();
+}, 2000);
+
+new Chart($("donut"), {
+  type: "doughnut",
+  data: { labels: ["React", "Next.js", "Whatever the AI picked", "Svelte (I'm different)", "Vanilla JS (hero)"], datasets: [{ data: [31, 24, 28, 10, 7], backgroundColor: ["#a855f7", "#6366f1", "#ec4899", "#22d3ee", "#facc15"], borderWidth: 0 }] },
+  options: { responsive: true, maintainAspectRatio: false, cutout: "65%", plugins: { legend: { position: "right", labels: { boxWidth: 10, font: { size: 10 } } } } },
+});
+
+new Chart($("bars"), {
+  type: "bar",
+  data: { labels: ["Dark mode", "Mobile", "1.2 support", "Save import", "\"Use SCIM\"", "AI"], datasets: [{ data: [92, 81, 77, 64, 58, 12], backgroundColor: ["#a855f7", "#8b5cf6", "#6366f1", "#818cf8", "#ec4899", "#f472b6"], borderRadius: 8 }] },
+  options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } },
+});
+
+const gauge = new Chart($("gauge"), {
+  type: "doughnut",
+  data: { datasets: [{ data: [3.7, 1.3], backgroundColor: ["#ec4899", "rgba(255,255,255,0.06)"], borderWidth: 0, circumference: 180, rotation: 270 }] },
+  options: { responsive: true, maintainAspectRatio: false, cutout: "78%", plugins: { tooltip: { enabled: false } } },
+});
+setInterval(() => {
+  const v = +(3.4 + Math.random() * 0.8).toFixed(1);
+  gauge.data.datasets[0].data = [v, 5 - v]; gauge.update(); $("ppi").textContent = v;
+}, 3000);
+
+// ===== Heatmap =====
+const HEAT = ["bg-white/5", "bg-purple-900", "bg-purple-700", "bg-purple-500", "bg-pink-400"];
+$("heat").innerHTML = Array.from({ length: 26 * 7 }, (_, i) => {
+  const w = i % 26, lvl = Math.min(4, Math.floor(Math.random() * (1 + w / 5)));
+  return `<div class="aspect-square rounded-[2px] ${HEAT[lvl]}" title="${lvl * 3} planners"></div>`;
+}).join("");
+
+// ===== Health =====
+const HEALTH = [
+  ["Planner supply", 100, "from-green-400 to-emerald-500", "OVERSUPPLIED"],
+  ["Planner demand", 6, "from-red-400 to-pink-500", "1 guy"],
+  ["Alternate recipe coverage", 71, "from-purple-400 to-indigo-500", "coming soon"],
+  ["Sparkle density ✨", 98, "from-pink-400 to-purple-500", "optimal"],
+];
+$("health").innerHTML = HEALTH.map(([l, v, g, s]) => `
+  <div><div class="flex justify-between mb-1"><span class="text-gray-300">${l}</span><span class="text-gray-500">${s}</span></div>
+  <div class="h-2 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r ${g}" style="width:${v}%"></div></div></div>`).join("");
+
+// ===== Live feed =====
+const EVENTS = [
+  () => { const n = genName(); return ["🚀", `<b>${n}</b> launched: "${pick(OPENERS)} a ${pick(ADJ)} ${pick(NOUN)} ${pick(SUFFIX)}"`, genHost(n)]; },
+  () => ["💬", `u/OldGuardPioneer commented <i>"how is this different from satisfactorytools?"</i>`, "r/SatisfactoryGame"],
+  () => { const p = pick(PLANNERS); return ["⭐", `<b>${esc(p.n)}</b> gained ${rand(1, 30)} bookmarks (will never be opened)`, "telemetry"]; },
+  () => { const n = genName(); return ["🔁", `<b>${n}</b> announced v2 (rewrite in ${pick(["Svelte", "Rust", "SolidJS", "HTMX", "Next.js 17"])})`, genHost(n)]; },
+  () => ["🤖", `AI Architect recommended <b>${rand(3, 9)} Constructors</b> for a ${rand(10, 60)}/min Iron Plate line`, "PlannerGPT"],
+  () => ["🟣", `New purple gradient detected (#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0")} → #6366f1)`, "gradient-watch"],
+  () => ["🐛", `Bug report: "plastic recipe loops forever"`, "GitHub issues"],
+  () => ["📱", `u/xX_Lizard_Doggo_Xx asked <i>"does it work on mobile"</i>`, "r/SatisfactoryGame"],
+];
+function feedPush() {
+  const [ic, txt, src] = pick(EVENTS)();
+  const el = document.createElement("div");
+  el.className = "feed-item flex gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/5";
+  el.innerHTML = `<div class="text-lg">${ic}</div><div class="min-w-0"><div class="text-xs text-gray-200 leading-snug">${txt}</div><div class="text-[10px] text-gray-500 mt-0.5 mono truncate">${esc(src)} · just now</div></div>`;
+  $("feed").prepend(el);
+  while ($("feed").children.length > 9) $("feed").lastChild.remove();
+  if (ic === "🚀") { bumpKpi("today", 1); $("notif").textContent = +$("notif").textContent + 1; }
+}
+for (let i = 0; i < 7; i++) feedPush();
+setInterval(feedPush, 2200);
+
+// ===== Countdown =====
+let cd = rand(20, 45);
+setInterval(() => {
+  cd--;
+  if (cd <= 0) {
+    const n = genName();
+    toast(`🚨 NEW PLANNER DETECTED: ${n} (${genHost(n)})`);
+    bumpKpi("indexed", 1);
+    cd = rand(25, 50);
+    const c = (90 + Math.random() * 9.9).toFixed(1); $("conf").textContent = c + "%"; $("confbar").style.width = c + "%";
+  }
+  $("countdown").textContent = `00:${String(cd).padStart(2, "0")}`;
+}, 1000);
+
+// ===== Terminal =====
+const LOGS = [
+  () => `[INFO] crawled r/SatisfactoryGame: ${rand(1, 4)} new planner(s) found`,
+  () => `[INFO] fetching Docs.json (34.2 MB)... ok`,
+  () => `[WARN] linear solver returned 0 for Plastic. shipping anyway`,
+  () => `[INFO] deploy ${genName().toLowerCase()}-mocha.vercel.app ✓ (${rand(8, 40)}s)`,
+  () => `[DEBUG] TODO: remove this log`,
+  () => `[INFO] sparkle_count=${rand(900, 1200)} ✨`,
+  () => `[ERROR] tests not found. continuing ✓`,
+  () => `[INFO] AI Architect: "use ${rand(3, 8)} constructors" (confidence 100%)`,
+  () => `[WARN] planner count exceeds Number.MAX_SAFE_PLANNERS`,
+  () => `[INFO] user asked "how is this different from satisfactorytools?" → 404 answer not found`,
+];
+function termPush() {
+  const el = document.createElement("div");
+  const line = pick(LOGS)();
+  el.className = line.includes("ERROR") ? "text-red-400" : line.includes("WARN") ? "text-yellow-400" : line.includes("DEBUG") ? "text-gray-500" : "";
+  el.textContent = `${now()} ${line}`;
+  $("term").appendChild(el);
+  while ($("term").children.length > 11) $("term").firstChild.remove();
+}
+for (let i = 0; i < 8; i++) termPush();
+setInterval(termPush, 1300);
+
+// ===== Testimonials =====
+const QUOTES = [
+  ["I used Satisfactory Planner Planner™ to pick a planner, then I made my own planner. Game changer!", "beltlord99, Planner Developer"],
+  ["How is this different from satisfactorytools?", "OldGuardPioneer, Reddit Commenter"],
+  ["[Insert testimonial here]", "John Doe, CEO at Company"],
+  ["I haven't built a factory in 3 weeks. I've just been comparing planners. 10/10.", "ada_fan, Former Pioneer"],
+  ["Honestly the Planner Planner™ is load-bearing at this point.", "Legal Department"],
+];
+let qi = 0;
+function showQuote() { const [q, b] = QUOTES[qi++ % QUOTES.length]; $("quote").style.opacity = 0; setTimeout(() => { $("quote").textContent = `"${q}"`; $("quoteby").textContent = "— " + b; $("quote").style.opacity = 1; }, 400); }
+showQuote(); setInterval(showQuote, 5000);
+
+// ===== Leaderboard =====
+const STATUSES = [["🟢", "Vibing"], ["🟣", "Adding AI"], ["🟡", "Rewriting in Rust"], ["🔵", "v2 soon"], ["🟠", "Fixing mobile"], ["⚪", "Picking a gradient"]];
+const board = PLANNERS.map((p) => ({ ...p, score: 6000 + (hash(p.n) % 4000), delta: 0, st: STATUSES[hash(p.u) % STATUSES.length] }));
+function renderBoard() {
+  const q = $("search").value.toLowerCase();
+  board.sort((a, b) => b.score - a.score);
+  $("board").innerHTML = board.filter((p) => (p.n + p.u + p.d).toLowerCase().includes(q)).map((p, i) => `
+    <tr class="border-t border-white/5 hover:bg-white/5">
+      <td class="py-2 px-2 text-gray-500">${i < 3 ? ["🥇", "🥈", "🥉"][i] : i + 1}</td>
+      <td class="py-2"><a href="${esc(p.u)}" target="_blank" class="font-semibold hover:text-purple-300">${esc(p.n)}</a>${p.t.includes("reddit") ? ' <span class="text-[9px] bg-pink-500/30 text-pink-300 rounded px-1">REDDIT</span>' : ""}<div class="text-[11px] text-gray-500 max-w-md truncate">${esc(p.d)}</div></td>
+      <td class="py-2 hidden md:table-cell text-xs text-gray-300 whitespace-nowrap">${p.st[0]} ${p.st[1]}</td>
+      <td class="py-2 text-right mono font-semibold">${p.score.toLocaleString()}</td>
+      <td class="py-2 px-2 text-right mono text-xs ${p.delta >= 0 ? "text-green-400" : "text-red-400"}">${p.delta >= 0 ? "▲" : "▼"} ${Math.abs(p.delta)}</td>
+    </tr>`).join("") || `<tr><td colspan="5" class="py-6 text-center text-gray-500">No planners found 😢 Maybe build one? 🚀</td></tr>`;
+}
+$("search").addEventListener("input", renderBoard);
+$("topsearch").addEventListener("input", (e) => { $("search").value = e.target.value; renderBoard(); });
+setInterval(() => {
+  for (let i = 0; i < 4; i++) { const p = pick(board); p.delta = rand(-120, 180); p.score += p.delta; }
+  renderBoard();
+}, 3000);
+renderBoard();
+
+// ===== Planner Planner™ tool =====
+let aiLevel = 1;
+document.querySelectorAll(".ai-opt").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll(".ai-opt").forEach((x) => x.classList.remove("ring-2", "ring-purple-500"));
+  b.classList.add("ring-2", "ring-purple-500"); aiLevel = +b.dataset.v;
+}));
+const THINKING = ["🤔 Thinking...", "🧠 Parsing Docs.json...", "📊 Solving...", "✨ Adding sparkles...", "⚖️ Trademarking..."];
+$("go").addEventListener("click", () => {
+  const btn = $("go"); let i = 0; btn.disabled = true; $("result").classList.add("hidden");
+  const iv = setInterval(() => (btn.textContent = THINKING[i++ % THINKING.length]), 400);
+  setTimeout(() => { clearInterval(iv); btn.disabled = false; btn.textContent = "✨ Regenerate Planner Plan"; showResult(); }, 2200);
+});
+function showResult() {
+  const tier = +$("tier").value, prompt = $("prompt").value.trim();
+  let pool = PLANNERS.filter((p) => (aiLevel === 0 ? !p.t.includes("ai") : true));
+  if (aiLevel === 2 && Math.random() < 0.7) pool = PLANNERS.filter((p) => p.t.includes("ai"));
+  const p = pick(pool);
+  const reasons = [
+    tier === 3 ? "You don't play, so you'll fit right in with the other planner devs." : tier === 2 ? "At Tier 9 any planner works. FICSIT already has your mind." : tier === 1 ? "Great for untangling spaghetti, or at least for showing you a prettier picture of it." : "Planning at Tier 0 shows commitment. Not to your free time, though.",
+    aiLevel === 2 ? "Maximum AI requested. An AI says this is a great choice. It's a great choice." : aiLevel === 1 ? "Roughly the AI level you asked for. Possibly more." : "No AI chatbot, as far as we know.",
+    prompt ? `Based on "${prompt}", PlannerGPT is 100% confident. (It didn't read it.)` : "Empty prompt, so the AI made something up. As it does.",
+  ];
+  $("result").innerHTML = `
+    <div class="rounded-xl p-[2px] bg-gradient-to-br from-purple-500 via-indigo-500 to-pink-500"><div class="bg-[#0f0f18] rounded-xl p-4">
+      <div class="flex justify-between items-center mb-2"><span class="text-[10px] font-bold text-purple-300 uppercase tracking-widest">✨ Planner Plan</span><span class="text-[10px] bg-green-500/20 text-green-300 rounded-full px-2 py-0.5">${90 + (hash(p.n) % 10)}% match</span></div>
+      <div class="text-2xl font-black gradient-text">${esc(p.n)}</div>
+      <a href="${esc(p.u)}" target="_blank" class="text-xs text-gray-400 break-all hover:text-purple-300">${esc(p.u)} ↗</a>
+      <ul class="mt-3 space-y-1.5 text-xs text-gray-300">${reasons.map((r) => `<li>• ${esc(r)}</li>`).join("")}</ul>
+      <p class="text-[10px] text-gray-500 mt-3">You'll still end up using satisfactorytools. We all know. 💜</p>
+    </div></div>`;
+  $("result").classList.remove("hidden");
+  toast("✨ Planner Plan generated successfully!");
+}
+
+// ===== PlannerGPT =====
+const REPLIES = [
+  (q) => `Great question! 🚀 Based on my analysis, the best planner is the one you build yourself. Have you considered vibe coding one this weekend?`,
+  (q) => `Absolutely! Here's a quick breakdown:\n\n1. ✨ Pick a planner\n2. 🤔 Doubt it\n3. 🔁 Repeat\n\nLet me know if you'd like more details! 😊`,
+  (q) => `I'd recommend ${pick(PLANNERS).n}! It's ${pick(["blazing fast", "AI-powered", "beautifully designed", "a planner"])} and perfect for your needs. (Note: I have not used it.)`,
+  (q) => `You're absolutely right! I apologize for the confusion. The correct answer is: use ${rand(3, 9)} Constructors. 🏭`,
+  (q) => `To make Plastic, you'll need Crude Oil and a Refinery. Or was it Rubber? Either way, it loops forever in most planners. 🛢️♾️`,
+  (q) => `As an AI language model, I can confidently say: how is this different from satisfactorytools? 🤖`,
+  (q) => `I've generated a planner for you! 🎉 It's deployed at ${genHost(genName())}. (It isn't. I can't do that.)`,
+];
+function bubble(text, me) {
+  const el = document.createElement("div");
+  el.className = me ? "ml-8 bg-purple-600/40 rounded-xl rounded-br-sm px-3 py-2 feed-item" : "mr-8 bg-white/5 rounded-xl rounded-bl-sm px-3 py-2 whitespace-pre-line feed-item";
+  el.textContent = text; $("chat").appendChild(el); $("chat").scrollTop = $("chat").scrollHeight; return el;
+}
+function ask(q) {
+  if (!q) return;
+  bubble(q, true);
+  const t = bubble("✨ Thinking...", false);
+  setTimeout(() => { t.textContent = pick(REPLIES)(q); $("chat").scrollTop = $("chat").scrollHeight; }, 900 + Math.random() * 900);
+}
+bubble("Hi Pioneer! 👋 I'm PlannerGPT, your AI-powered planner planning assistant. How can I help you plan your planner today? ✨", false);
+$("chatform").addEventListener("submit", (e) => { e.preventDefault(); ask($("chatin").value.trim()); $("chatin").value = ""; });
+document.querySelectorAll(".sugg").forEach((b) => b.addEventListener("click", () => ask(b.textContent)));
+</script>
+</body>
+</html>
